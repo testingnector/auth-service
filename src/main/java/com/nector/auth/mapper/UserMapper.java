@@ -1,14 +1,20 @@
 package com.nector.auth.mapper;
 
-import org.modelmapper.ModelMapper;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
-@Configuration
-public class UserMapper {
+import com.nector.auth.dto.request.RegisterRequest;
+import com.nector.auth.entity.User;
 
-	@Bean
-	public ModelMapper modelMapper() {
-		return new ModelMapper();
-	}
+@Mapper(componentModel = "spring")
+public interface UserMapper {
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "passwordHash", ignore = true)       // encrypt karke service me set hoga
+    @Mapping(target = "passwordAlgorithm", ignore = true)
+    @Mapping(target = "isActive", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
+    @Mapping(target = "deletedAt", ignore = true)
+    User toEntity(RegisterRequest registerRequest);
 }

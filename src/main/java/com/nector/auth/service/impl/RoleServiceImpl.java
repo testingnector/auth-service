@@ -11,6 +11,7 @@ import com.nector.auth.dto.request.RoleRequest;
 import com.nector.auth.dto.response.ApiResponse;
 import com.nector.auth.entity.Role;
 import com.nector.auth.exception.RoleAlreadyExistsException;
+import com.nector.auth.mapper.RoleMapper;
 import com.nector.auth.repository.RoleRepository;
 import com.nector.auth.service.RoleService;
 
@@ -22,7 +23,7 @@ public class RoleServiceImpl implements RoleService{
     private RoleRepository roleRepository;
 
     @Autowired
-    private ModelMapper modelMapper;
+    private RoleMapper roleMapper;
     
     
     @Override
@@ -37,7 +38,7 @@ public class RoleServiceImpl implements RoleService{
     			throw new RoleAlreadyExistsException("Role code already exists for this company");
     		});
     		
-    		Role role = modelMapper.map(roleRequest, Role.class);
+    		Role role = roleMapper.toEntity(roleRequest);
     		role.setIsActive(true);
     		role.setCreatedAt(LocalDateTime.now());
     		

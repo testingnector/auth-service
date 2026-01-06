@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.nector.auth.dto.request.RegisterRequest;
 import com.nector.auth.entity.User;
 import com.nector.auth.exception.EmailAlreadyExistsException;
+import com.nector.auth.mapper.UserMapper;
 import com.nector.auth.repository.UserRepository;
 import com.nector.auth.service.AuthService;
 
@@ -22,7 +23,7 @@ public class AuthServiceImpl implements AuthService{
 	private UserRepository userRepository;
 	
 	@Autowired
-	private ModelMapper modelMapper;
+	private UserMapper userMapper;
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -35,7 +36,7 @@ public class AuthServiceImpl implements AuthService{
 			throw new EmailAlreadyExistsException("Email already exists!");
 		}
 		
-		User user = modelMapper.map(registerRequest, User.class);
+		User user = userMapper.toEntity(registerRequest);
 		user.setPasswordHash(passwordEncoder.encode(registerRequest.getPassword()));
 		user.setPasswordAlgorithm("bcrypt");
 		user.setMobileNumber(registerRequest.getMobileNumber());
