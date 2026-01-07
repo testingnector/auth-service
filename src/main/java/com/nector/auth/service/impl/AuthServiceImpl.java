@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -55,8 +56,8 @@ public class AuthServiceImpl implements AuthService {
 		String roleCode = (userCount == 0) ? "ADMIN" : "USER";
 
 		Role role = roleRepository.findByRoleCode(roleCode)
-	              .orElseThrow(() -> new RoleNotFoundException("Role not found"));
-		
+				.orElseThrow(() -> new RoleNotFoundException("Role not found"));
+
 		try {
 			User user = userMapper.toEntity(registerRequest);
 			user.setPasswordHash(passwordEncoder.encode(registerRequest.getPassword()));
@@ -83,11 +84,12 @@ public class AuthServiceImpl implements AuthService {
 			response.setCompanyId(user.getCompanyId());
 			response.setIsActive(user.getIsActive());
 
-			return new ApiResponse(true, "User register successfully...", "CREATED", "201", response);
+			return new ApiResponse(true, "User register successfully...", HttpStatus.CREATED,
+					HttpStatus.CREATED.value(), response);
 
 		} catch (Exception e) {
-			return new ApiResponse(false, "Error occurred during user registration!", "INTERNAL SERVER ERROR", "500",
-					Collections.emptyList());
+			return new ApiResponse(false, "Error occurred during user registration!", HttpStatus.INTERNAL_SERVER_ERROR,
+					HttpStatus.INTERNAL_SERVER_ERROR.value(), Collections.emptyList());
 		}
 
 	}

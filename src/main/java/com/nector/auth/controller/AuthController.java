@@ -5,9 +5,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.nector.auth.dto.request.LoginRequest;
 import com.nector.auth.dto.request.RegisterRequest;
+import com.nector.auth.dto.request.VerifyOtpRequest;
 import com.nector.auth.dto.response.ApiResponse;
 import com.nector.auth.dto.response.RegisterResponse;
 import com.nector.auth.entity.User;
+import com.nector.auth.security.CustomUserDetailsService;
+import com.nector.auth.security.jwt.JwtTokenProvider;
 import com.nector.auth.service.AuthService;
 import com.nector.auth.service.EmailService;
 import com.nector.auth.service.OtpService;
@@ -41,6 +44,11 @@ public class AuthController {
 	@Autowired
 	private EmailService emailService;
 	
+	@Autowired
+	private CustomUserDetailsService customUserDetailsService;
+	
+	@Autowired
+	private JwtTokenProvider jwtTokenProvider;
 	
 	@PostMapping("/register")
 	public ResponseEntity<ApiResponse> register(@Valid @RequestBody RegisterRequest registerRequest) {
@@ -80,6 +88,21 @@ public class AuthController {
 		}
  		
 	}
+	
+	@PostMapping("/verify-otp")
+	public ResponseEntity<ApiResponse> verifyOtp(@Valid @RequestBody VerifyOtpRequest verifyOtpRequest) {
+
+		ApiResponse response = otpService.validateOtp(verifyOtpRequest.getEmail(), verifyOtpRequest.getOtp());
+		if (!response.isSuccess()) {
+			return ResponseEntity.status(response.getHttpStatus()).body(response);
+		}
+		
+		UserDetails userDetails = customUserDetailsService.loadUserByUsername(verifyOtpRequest.getEmail());
+		ApiResponse jwtResponse = jwtTokenProvider.generateJwtToken(userDetails);
+		
+		return ResponseEntity.status(HttpStatus.OK).body(jwtResponse);
+	}
+	
 	
 	
 }

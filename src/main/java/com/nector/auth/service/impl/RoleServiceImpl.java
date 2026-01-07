@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.nector.auth.dto.request.RoleRequest;
@@ -48,11 +49,12 @@ public class RoleServiceImpl implements RoleService {
 			response.setCompanyId(saveRole.getCompanyId());
 			response.setIsActive(saveRole.getIsActive());
 
-			return new ApiResponse(true, "Role inserted successfully...", "CREATED", "201", response);
+			return new ApiResponse(true, "Role inserted successfully...", HttpStatus.CREATED,
+					HttpStatus.CREATED.value(), response);
 
 		} catch (Exception e) {
-			return new ApiResponse(false, "Error occurred during role insertion!", "INTERNAL SERVER ERROR", "500",
-					Collections.emptyList());
+			return new ApiResponse(false, "Error occurred during role insertion!", HttpStatus.INTERNAL_SERVER_ERROR,
+					HttpStatus.INTERNAL_SERVER_ERROR.value(), Collections.emptyList());
 
 		}
 	}
