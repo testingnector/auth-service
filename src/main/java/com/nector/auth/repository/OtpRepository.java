@@ -6,14 +6,11 @@ import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.nector.auth.entity.User;
+import com.nector.auth.entity.OtpVerification;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, UUID>{
+public interface OtpRepository extends JpaRepository<OtpVerification, UUID>{
 
-	boolean existsByEmail(String email);
-
-	Optional<User> findByEmail(String email);
-	
+	Optional<OtpVerification> findByEmail(String email);
 
 }
