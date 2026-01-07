@@ -12,6 +12,8 @@ import com.nector.auth.dto.request.RoleRequest;
 import com.nector.auth.dto.response.ApiResponse;
 import com.nector.auth.service.RoleService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/roles")
 public class RoleController {
@@ -20,9 +22,9 @@ public class RoleController {
     private RoleService roleService;
 
     @PostMapping("/insert")
-    public ResponseEntity<ApiResponse> insertRole(@RequestBody RoleRequest roleRequest) {
+    public ResponseEntity<ApiResponse> insertRole(@Valid @RequestBody RoleRequest roleRequest) {
         ApiResponse response = roleService.insertRole(roleRequest);
-        if (response.isSuccesss()) {
+        if (response.isSuccess()) {
 			return ResponseEntity.status(HttpStatus.CREATED).body(response);
 		}
         else {

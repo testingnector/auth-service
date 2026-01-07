@@ -1,5 +1,7 @@
 package com.nector.auth.dto.request;
 
+import java.util.UUID;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -21,6 +23,6 @@ public class RoleRequest {
     private String roleName;   // display name
 
     @NotNull(message = "Company ID is required")
-    private Long companyId;    // optional for multi-tenant
+    private UUID companyId;    // optional for multi-tenant
 
 }

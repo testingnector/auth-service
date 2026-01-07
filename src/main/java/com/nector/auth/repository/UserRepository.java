@@ -11,7 +11,7 @@ import com.nector.auth.entity.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, UUID>{
 
-	Optional<User> existsByEmail(String email);
+	boolean existsByEmail(String email);
 	
 
 }

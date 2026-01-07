@@ -20,11 +20,17 @@ public class SecurityConfig {
 					.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 			
 			.authorizeHttpRequests(auth -> auth
-			        .requestMatchers("/auth/register/**", "/auth/login/**", "/auth/verify-otp/**").permitAll()
-					.requestMatchers("/admin/**").hasRole("ADMIN")
-					.requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
-					.anyRequest().authenticated()
-					);
+				    .requestMatchers(
+				        "/auth/register/**",
+				        "/auth/login/**",
+				        "/auth/verify-otp/**"
+				    ).permitAll()
+				    .requestMatchers("/roles/**").permitAll()
+				    .requestMatchers("/admin/**").hasRole("ADMIN")
+				    .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
+				    .anyRequest().authenticated()
+				);
+
 			
 		return http.build();
 	}

@@ -7,10 +7,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.nector.auth.entity.Role;
+import com.nector.auth.entity.User;
 
 @Repository
 public interface RoleRepository extends JpaRepository<Role, UUID>{
 
-    Optional<Role> findByRoleCodeAndCompanyId(String roleCode, Long companyId);
+    Optional<Role> findByRoleCodeAndCompanyId(String roleCode, UUID companyId);
+
+	Optional<Role> findByRoleCode(String roleCode);
 
 }

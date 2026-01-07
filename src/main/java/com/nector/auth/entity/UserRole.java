@@ -8,7 +8,15 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "user_roles")
 public class UserRole {
@@ -17,9 +25,9 @@ public class UserRole {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    private Long userId;   // reference to User service
-    private Long roleId;   // reference to Role service
-    private Long companyId;
+    private UUID userId;   // reference to User service
+    private UUID roleId;   // reference to Role service
+    private UUID companyId;
 
     private Boolean isActive = true;
 

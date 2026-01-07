@@ -39,7 +39,7 @@ public class User {
 	private Boolean isActive = true;
 
 	@Column(name = "company_id", nullable = false)
-	private Long companyId;
+	private UUID companyId;
 
 	private LocalDateTime createdAt;
 	private LocalDateTime updatedAt;

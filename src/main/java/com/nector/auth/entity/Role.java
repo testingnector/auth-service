@@ -30,7 +30,7 @@ public class Role {
     @Column(name = "role_name", nullable = false, length = 100)
     private String roleName;
 
-    private Long companyId;
+    private UUID companyId;
     
     private Boolean isActive = true;
     
