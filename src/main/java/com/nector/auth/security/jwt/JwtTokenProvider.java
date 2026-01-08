@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 
 import com.nector.auth.dto.response.ApiResponse;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -61,5 +62,53 @@ public class JwtTokenProvider {
 		SecretKey key = Keys.hmacShaKeyFor(keyBytes);
 		return key;
 	}
+
+//	--------------------------------------------------------------------------------
+	
+	public Claims getClaims(String token) {
+		return Jwts.parserBuilder()
+				.setSigningKey(getKey())
+				.build()
+				.parseClaimsJws(token)
+				.getBody();
+	}
+	
+//	---------FIND USERNAME FROM TOKEN-----------
+	public String getUsernameFromToken(String token) {
+
+		Claims claims = getClaims(token);
+		return claims.getSubject();
+	}
+
+//	---------CHECK TOKEN EXPIRY-----------
+	private boolean isTokenExpired(String token) {
+
+		Claims claims = getClaims(token);
+        return claims.getExpiration().before(new Date());
+		
+		 
+	}
+//	---------FIND ROLES FROM TOKEN-----------
+	public List<String> getRolesFromToken(String token) {
+
+		Claims claims = getClaims(token);
+		
+		return (List<String>) claims.get("roles");
+	}
+
+//	---------VALIDATE TOKEN-----------
+	public boolean validateToken(String token, UserDetails userDetails) {
+
+		
+		try {
+			String username = getUsernameFromToken(token);
+			return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+			
+		} catch (Exception e) {
+			return false;
+		}
+		
+	}
+
 
 }
